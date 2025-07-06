@@ -126,6 +126,7 @@ QString ethernetmanager::getIPv4SubnetforEthernet()
 
 QString ethernetmanager::getIPv4forEthernet()
 {
+    qInfo() << "getIPv4forEthernet" << m_sIPv4;
     return m_sIPv4;
 }
 
@@ -154,16 +155,12 @@ QJsonDocument ethernetmanager::parseNetworkInfo(QString reply)
     QJsonDocument networkConfig = QJsonDocument::fromJson(reply.toUtf8());
     qInfo() << "Parsing network configuration.";
     QJsonDocument doc;
-    qInfo() << "#####################" << networkConfig.isNull();
+
     if (!networkConfig.isNull()) {
         if (networkConfig.isObject()) {
-            qInfo() << "#####################" << networkConfig.isObject();
             QJsonArray macAddressArray = networkConfig["PermanentHardwareAddress"].toArray();
-            qInfo() << "###########111111111##########";
             QJsonArray dnsArray = networkConfig["DNS"].toArray()[0].toObject()["Address"].toArray();
-            qInfo() << "#########22222############" ;
             QJsonArray routersArray = networkConfig["Routes"].toArray();
-            qInfo() << "#########333333############" ;
             QJsonArray addressArray = networkConfig["Addresses"].toArray();
             
             // info for IPv4
@@ -179,11 +176,11 @@ QJsonDocument ethernetmanager::parseNetworkInfo(QString reply)
                 
                 if (address.toObject()["Family"].toInt() == eWiFiFormatType::FormatType_IPV4
                     && (address.toObject()["Address"].toArray().isEmpty() == false)) {
-                        qInfo() << "##########44444###########" ;
                     ipv4 = address.toObject()["Address"].toArray();
                     prefix = address.toObject()["prefixLength"].toInt();
                     m_sSubnetMask = prefixToSubnetMask(prefix);
                     m_sIPv4 = convertQJsonArrayToQStringFormat(ipv4, eWiFiFormatType::FormatType_IPV4);
+                    qInfo() << "ethernet info" << QString("ipv4= %1").arg(m_sIPv4);
                     foreach (QJsonValue router, routersArray) {
                         if (router.toObject()["Gateway"].toArray().isEmpty() == false
                             && router.toObject()["ConfigSource"].toString() == address.toObject()["ConfigSource"].toString()) {
@@ -191,6 +188,8 @@ QJsonDocument ethernetmanager::parseNetworkInfo(QString reply)
                             m_sIPv4Gateway = convertQJsonArrayToQStringFormat(ipv4_GatewayArray, eWiFiFormatType::FormatType_IPV4);
                             m_sDNS = convertQJsonArrayToQStringFormat(dnsArray, eWiFiFormatType::FormatType_IPV4);
                             m_sMaCAddress = convertQJsonArrayToQStringFormat(macAddressArray, eWiFiFormatType::FormatType_MAC_ADDRESS);
+                            qInfo() << "ethernet info" 
+                                    << QString("m_sIPv4Gateway= %1 and m_sDNS= %2 and m_sMaCAddress= %3").arg(m_sIPv4Gateway).arg(m_sDNS).arg(m_sMaCAddress);
                         } 
                     }
                 } else if (address.toObject()["Family"].toInt() == eWiFiFormatType::FormatType_IPV6
@@ -313,7 +312,7 @@ void ethernetmanager::SetEth0StaticConfig(QString add,QString gateway ,int prefi
     text << str.join("");
     file.close();
     //Step5:restart systemd-networkd systemctl restart systemd-networkd
-    ExucProcess("systemctl",QStringList() << "restart" << "systemd-networkd");
+    ExucProcess("networkctl",QStringList() << "reconfigure" << "eth0");
 }
 
 QString ethernetmanager::ExucProcess(QString CMD,QStringList list){

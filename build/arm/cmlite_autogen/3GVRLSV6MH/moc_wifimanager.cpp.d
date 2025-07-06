@@ -1,5 +1,5 @@
-/home/el-sayed/WS_2025/CMLite/build/arm/cmlite_autogen/3GVRLSV6MH/moc_wifimanager.cpp: /home/el-sayed/WS_2025/CMLite/source/wifimanager/wifimanager.hpp \
-  /home/el-sayed/WS_2025/CMLite/build/arm/cmlite_autogen/moc_predefs.h \
+/home/el-sayed/EMNControl/CMLite/build/arm/cmlite_autogen/3GVRLSV6MH/moc_wifimanager.cpp: /home/el-sayed/EMNControl/CMLite/source/wifimanager/wifimanager.hpp \
+  /home/el-sayed/EMNControl/CMLite/build/arm/cmlite_autogen/moc_predefs.h \
   /home/el-sayed/Documents/Qt-CrossCompile-RaspberryPi/raspberrypi4/qt5.15/include/QtCore/QDebug \
   /home/el-sayed/Documents/Qt-CrossCompile-RaspberryPi/raspberrypi4/qt5.15/include/QtCore/QObject \
   /home/el-sayed/Documents/Qt-CrossCompile-RaspberryPi/raspberrypi4/qt5.15/include/QtCore/QString \

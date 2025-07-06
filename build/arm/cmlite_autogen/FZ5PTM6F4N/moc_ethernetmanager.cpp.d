@@ -1,5 +1,5 @@
-/home/el-sayed/WS_2025/CMLite/build/arm/cmlite_autogen/FZ5PTM6F4N/moc_ethernetmanager.cpp: /home/el-sayed/WS_2025/CMLite/source/ethernetmanager/ethernetmanager.hpp \
-  /home/el-sayed/WS_2025/CMLite/build/arm/cmlite_autogen/moc_predefs.h \
+/home/el-sayed/EMNControl/CMLite/build/arm/cmlite_autogen/FZ5PTM6F4N/moc_ethernetmanager.cpp: /home/el-sayed/EMNControl/CMLite/source/ethernetmanager/ethernetmanager.hpp \
+  /home/el-sayed/EMNControl/CMLite/build/arm/cmlite_autogen/moc_predefs.h \
   /home/el-sayed/Documents/Qt-CrossCompile-RaspberryPi/raspberrypi4/qt5.15/include/QtCore/QDebug \
   /home/el-sayed/Documents/Qt-CrossCompile-RaspberryPi/raspberrypi4/qt5.15/include/QtCore/QDir \
   /home/el-sayed/Documents/Qt-CrossCompile-RaspberryPi/raspberrypi4/qt5.15/include/QtCore/QFile \
@@ -100,8 +100,8 @@
   /home/el-sayed/Documents/Qt-CrossCompile-RaspberryPi/raspberrypi4/qt5.15/include/QtDBus/qdbuspendingreply.h \
   /home/el-sayed/Documents/Qt-CrossCompile-RaspberryPi/raspberrypi4/qt5.15/include/QtDBus/qdbusreply.h \
   /home/el-sayed/Documents/Qt-CrossCompile-RaspberryPi/raspberrypi4/qt5.15/include/QtDBus/qtdbusglobal.h \
-  /home/el-sayed/WS_2025/CMLite/source/WrapperLib/QDBus/iQDBusInterface.hpp \
-  /home/el-sayed/WS_2025/CMLite/source/wrapperLibInterface/QDBusInterfaceWrapperInterface.hpp \
+  /home/el-sayed/EMNControl/CMLite/source/WrapperLib/QDBus/iQDBusInterface.hpp \
+  /home/el-sayed/EMNControl/CMLite/source/wrapperLibInterface/QDBusInterfaceWrapperInterface.hpp \
   /usr/aarch64-linux-gnu/include/assert.h \
   /usr/aarch64-linux-gnu/include/bits/atomic_wide_counter.h \
   /usr/aarch64-linux-gnu/include/bits/cpu-set.h \

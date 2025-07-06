@@ -1,5 +1,5 @@
-/home/el-sayed/WS_2025/CMLite/build/arm/cmlite_autogen/KS3UX4TNHX/moc_dbusnetworkmanager.cpp: /home/el-sayed/WS_2025/CMLite/source/dbus/dbusnetworkmanager.hpp \
-  /home/el-sayed/WS_2025/CMLite/build/arm/cmlite_autogen/moc_predefs.h \
+/home/el-sayed/EMNControl/CMLite/build/arm/cmlite_autogen/KS3UX4TNHX/moc_dbusnetworkmanager.cpp: /home/el-sayed/EMNControl/CMLite/source/dbus/dbusnetworkmanager.hpp \
+  /home/el-sayed/EMNControl/CMLite/build/arm/cmlite_autogen/moc_predefs.h \
   /home/el-sayed/Documents/Qt-CrossCompile-RaspberryPi/raspberrypi4/qt5.15/include/QtCore/QDebug \
   /home/el-sayed/Documents/Qt-CrossCompile-RaspberryPi/raspberrypi4/qt5.15/include/QtCore/QDir \
   /home/el-sayed/Documents/Qt-CrossCompile-RaspberryPi/raspberrypi4/qt5.15/include/QtCore/QFile \
@@ -100,13 +100,13 @@
   /home/el-sayed/Documents/Qt-CrossCompile-RaspberryPi/raspberrypi4/qt5.15/include/QtDBus/qdbuspendingreply.h \
   /home/el-sayed/Documents/Qt-CrossCompile-RaspberryPi/raspberrypi4/qt5.15/include/QtDBus/qdbusreply.h \
   /home/el-sayed/Documents/Qt-CrossCompile-RaspberryPi/raspberrypi4/qt5.15/include/QtDBus/qtdbusglobal.h \
-  /home/el-sayed/WS_2025/CMLite/source/WrapperLib/QDBus/iQDBusInterface.hpp \
-  /home/el-sayed/WS_2025/CMLite/source/ethernetmanager/ethernetmanager.hpp \
-  /home/el-sayed/WS_2025/CMLite/source/hotspotmanager/hotspotmanager.hpp \
-  /home/el-sayed/WS_2025/CMLite/source/ltemanager/ltemanager.hpp \
-  /home/el-sayed/WS_2025/CMLite/source/networkmanager/networkmanager.hpp \
-  /home/el-sayed/WS_2025/CMLite/source/wifimanager/wifimanager.hpp \
-  /home/el-sayed/WS_2025/CMLite/source/wrapperLibInterface/QDBusInterfaceWrapperInterface.hpp \
+  /home/el-sayed/EMNControl/CMLite/source/WrapperLib/QDBus/iQDBusInterface.hpp \
+  /home/el-sayed/EMNControl/CMLite/source/ethernetmanager/ethernetmanager.hpp \
+  /home/el-sayed/EMNControl/CMLite/source/hotspotmanager/hotspotmanager.hpp \
+  /home/el-sayed/EMNControl/CMLite/source/ltemanager/ltemanager.hpp \
+  /home/el-sayed/EMNControl/CMLite/source/networkmanager/networkmanager.hpp \
+  /home/el-sayed/EMNControl/CMLite/source/wifimanager/wifimanager.hpp \
+  /home/el-sayed/EMNControl/CMLite/source/wrapperLibInterface/QDBusInterfaceWrapperInterface.hpp \
   /usr/aarch64-linux-gnu/include/assert.h \
   /usr/aarch64-linux-gnu/include/bits/atomic_wide_counter.h \
   /usr/aarch64-linux-gnu/include/bits/cpu-set.h \
