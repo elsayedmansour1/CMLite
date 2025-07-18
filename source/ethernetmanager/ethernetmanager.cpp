@@ -312,6 +312,7 @@ void ethernetmanager::SetEth0StaticConfig(QString add,QString gateway ,int prefi
     text << str.join("");
     file.close();
     //Step5:restart systemd-networkd systemctl restart systemd-networkd
+    ExucProcess("systemctl",QStringList() << "restart" << "systemd-networkd");
     ExucProcess("networkctl",QStringList() << "reconfigure" << "eth0");
 }
 
