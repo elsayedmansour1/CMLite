@@ -51,7 +51,10 @@ class EthernetmanagerAdaptor: public QDBusAbstractAdaptor
 "    <method name=\"getIPv6GatewayforEthernet\">\n"
 "      <arg direction=\"out\" type=\"s\" name=\"path\"/>\n"
 "    </method>\n"
-"    <method name=\"getIPv6SubnetforEthernet\">\n"
+"    <method name=\"getIPv6PrefixLengthforEthernet\">\n"
+"      <arg direction=\"out\" type=\"i\" name=\"path\"/>\n"
+"    </method>\n"
+"    <method name=\"getIPv6DNSforEthernet\">\n"
 "      <arg direction=\"out\" type=\"s\" name=\"path\"/>\n"
 "    </method>\n"
 "    <method name=\"SetEth0StaticConfig\">\n"
@@ -78,8 +81,9 @@ public Q_SLOTS: // METHODS
     QString getIPv4SubnetforEthernet();
     QString getIPv4forEthernet();
     QString getIPv6GatewayforEthernet();
-    QString getIPv6SubnetforEthernet();
+    int getIPv6PrefixLengthforEthernet();
     QString getIPv6forEthernet();
+    QString getIPv6DNSforEthernet();
 Q_SIGNALS: // SIGNALS
 };
 

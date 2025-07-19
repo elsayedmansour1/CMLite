@@ -75,10 +75,10 @@ QString EthernetmanagerAdaptor::getIPv6GatewayforEthernet()
     return parent()->getIPv6GatewayforEthernet();
 }
 
-QString EthernetmanagerAdaptor::getIPv6SubnetforEthernet()
+int EthernetmanagerAdaptor::getIPv6PrefixLengthforEthernet()
 {
-    // handle method call cm.Ethernetmanager.getIPv6SubnetforEthernet
-    return parent()->getIPv6SubnetforEthernet();
+    // handle method call cm.Ethernetmanager.getIPv6PrefixLengthforEthernet
+    return parent()->getIPv6PrefixLengthforEthernet();
 }
 
 QString EthernetmanagerAdaptor::getIPv6forEthernet()
@@ -87,3 +87,8 @@ QString EthernetmanagerAdaptor::getIPv6forEthernet()
     return parent()->getIPv6forEthernet();
 }
 
+QString EthernetmanagerAdaptor::getIPv6DNSforEthernet()
+{
+    // handle method call cm.Ethernetmanager.getIPv4DNSforEthernet
+    return parent()->getIPv6DNSforEthernet();
+}

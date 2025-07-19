@@ -34,9 +34,9 @@ QString dbusnetworkmanager::getIPv6GatewayforEthernet()
     return mNetworkmanager->accessToEthernet().getIPv6GatewayforEthernet();
 }
 
-QString dbusnetworkmanager::getIPv6SubnetforEthernet()
+int dbusnetworkmanager::getIPv6PrefixLengthforEthernet()
 {
-    return mNetworkmanager->accessToEthernet().getIPv6SubnetforEthernet();
+    return mNetworkmanager->accessToEthernet().getIPv6PrefixLengthforEthernet();
 }
 
 QString dbusnetworkmanager::getIPv6forEthernet()
@@ -52,4 +52,9 @@ void dbusnetworkmanager::SetEth0StaticConfig(const QString &add, const QString &
 void dbusnetworkmanager::enableDHCP()
 {
     mNetworkmanager->accessToEthernet().enableDHCP();
+}
+
+QString dbusnetworkmanager::getIPv6DNSforEthernet()
+{
+    return mNetworkmanager->accessToEthernet().getIPv6DNSforEthernet();
 }

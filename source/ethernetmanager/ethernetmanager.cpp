@@ -60,27 +60,27 @@ void ethernetmanager::init(){
 ethernetmanager::~ethernetmanager() = default;
 
 void ethernetmanager::onPropertiesChanged(QString interfaceName, QVariantMap changedProps, QStringList invalidatedProps) {
-    qInfo() << "PropertiesChanged on interface:" << interfaceName;
-    qInfo() << "Changed properties:";
     for (auto it = changedProps.begin(); it != changedProps.end(); ++it) {
-        qInfo() << "  " << it.key() << ":" << it.value();
         if( it.key() == QString("IPv4AddressState")){
-            qInfo() << "####@@@@@@@@##########!!!!!!!!!!";
             if (it.value().toString() == "off"){
                 qInfo() << "clearing all eth0 info";
-                mPathEth0= QString();
-                m_sIPv4= QString();
-                m_sMaCAddress= QString();
-                m_sDNS= QString();
+                m_sMaCAddress = QString();
+                m_sIPv4 = QString();
+                m_sSubnetMaskIPv4 = QString();
                 m_sIPv4Gateway= QString();
+                m_sDNSv4= QString();
                 m_sIPv6= QString();
-                m_sSubnetMask = QString();
+                m_iPrefixLengthIPv6 = int();
+            } else if (it.value().toString() == "routable"){
+                parseNetworkInfo(getAllInfoForEth());
             }
-
+        } else if (it.key() == QString("IPv6AddressState")){
+            if (it.value().toString() == "routable") {
+                parseNetworkInfo(getAllInfoForEth());
+            }
         }
-        parseNetworkInfo(getAllInfoForEth());
+        
     }
-    qInfo() << "Invalidated properties:" << invalidatedProps;
 }
 
 QString ethernetmanager::getCurrectInterfaceLinkForEth() {
@@ -121,7 +121,7 @@ QString ethernetmanager::getIPv4GatewayforEthernet()
 
 QString ethernetmanager::getIPv4SubnetforEthernet()
 {
-    return m_sSubnetMask;
+    return m_sSubnetMaskIPv4;
 }
 
 QString ethernetmanager::getIPv4forEthernet()
@@ -132,7 +132,7 @@ QString ethernetmanager::getIPv4forEthernet()
 
 QString ethernetmanager::getIPv4DNSforEthernet()
 {
-    return m_sDNS;
+    return m_sDNSv4;
 }
 
 QString ethernetmanager::getIPv6GatewayforEthernet()
@@ -140,16 +140,19 @@ QString ethernetmanager::getIPv6GatewayforEthernet()
     return QString();
 }
 
-QString ethernetmanager::getIPv6SubnetforEthernet()
+int ethernetmanager::getIPv6PrefixLengthforEthernet()
 {
-    return QString();
+    return m_iPrefixLengthIPv6;
 }
 
 QString ethernetmanager::getIPv6forEthernet()
 {
     return m_sIPv6;
 }
-
+QString ethernetmanager::getIPv6DNSforEthernet()
+{
+    return m_sDNSv6;
+}
 QJsonDocument ethernetmanager::parseNetworkInfo(QString reply)
 {
     QJsonDocument networkConfig = QJsonDocument::fromJson(reply.toUtf8());
@@ -159,44 +162,59 @@ QJsonDocument ethernetmanager::parseNetworkInfo(QString reply)
     if (!networkConfig.isNull()) {
         if (networkConfig.isObject()) {
             QJsonArray macAddressArray = networkConfig["PermanentHardwareAddress"].toArray();
-            QJsonArray dnsArray = networkConfig["DNS"].toArray()[0].toObject()["Address"].toArray();
+            QJsonArray dnsArray = networkConfig["DNS"].toArray();
             QJsonArray routersArray = networkConfig["Routes"].toArray();
             QJsonArray addressArray = networkConfig["Addresses"].toArray();
-            
-            // info for IPv4
-            QJsonArray ipv4_GatewayArray;
-            QJsonArray ipv4;
-            int prefix;
-            // info for IPv6
-            QJsonArray ipv6_GatewayArray;
-            QJsonArray ipv6;
-            QString ipv6_PrefixLengthStr = QString("");
-            
+            // qInfo() <<  "dnsArray" << dnsArray;
+
+            //for fetching ip and PrefixLength (v4 and v6)
             foreach (QJsonValue address, addressArray) {
-                
                 if (address.toObject()["Family"].toInt() == eWiFiFormatType::FormatType_IPV4
-                    && (address.toObject()["Address"].toArray().isEmpty() == false)) {
-                    ipv4 = address.toObject()["Address"].toArray();
-                    prefix = address.toObject()["prefixLength"].toInt();
-                    m_sSubnetMask = prefixToSubnetMask(prefix);
+                    && (!address.toObject()["Address"].toArray().isEmpty())) {
+                    QJsonArray ipv4 = address.toObject()["Address"].toArray();
+                    int prefix = address.toObject()["PrefixLength"].toInt();
+                    m_sSubnetMaskIPv4 = prefixToSubnetMask(prefix);
                     m_sIPv4 = convertQJsonArrayToQStringFormat(ipv4, eWiFiFormatType::FormatType_IPV4);
-                    qInfo() << "ethernet info" << QString("ipv4= %1").arg(m_sIPv4);
-                    foreach (QJsonValue router, routersArray) {
-                        if (router.toObject()["Gateway"].toArray().isEmpty() == false
-                            && router.toObject()["ConfigSource"].toString() == address.toObject()["ConfigSource"].toString()) {
-                            ipv4_GatewayArray = router.toObject()["Gateway"].toArray();
-                            m_sIPv4Gateway = convertQJsonArrayToQStringFormat(ipv4_GatewayArray, eWiFiFormatType::FormatType_IPV4);
-                            m_sDNS = convertQJsonArrayToQStringFormat(dnsArray, eWiFiFormatType::FormatType_IPV4);
-                            m_sMaCAddress = convertQJsonArrayToQStringFormat(macAddressArray, eWiFiFormatType::FormatType_MAC_ADDRESS);
-                            qInfo() << "ethernet info" 
-                                    << QString("m_sIPv4Gateway= %1 and m_sDNS= %2 and m_sMaCAddress= %3").arg(m_sIPv4Gateway).arg(m_sDNS).arg(m_sMaCAddress);
-                        } 
-                    }
+                    qInfo() << "ethernet info" << QString("ipv4= %1 and Subnet= %2").arg(m_sIPv4).arg(m_sSubnetMaskIPv4);
+                    
                 } else if (address.toObject()["Family"].toInt() == eWiFiFormatType::FormatType_IPV6
-                    && (address.toObject()["Address"].toArray().isEmpty() == false)) {
-                    ipv6 = address.toObject()["Address"].toArray();
-                    m_sIPv6 = convertQJsonArrayToQStringFormat(ipv6, eWiFiFormatType::FormatType_IPV6); 
+                    && (!address.toObject()["Address"].toArray().isEmpty())
+                    && (address.toObject()["ScopeString"].toString() == "global")) {
+                    QJsonArray ipv6 = address.toObject()["Address"].toArray();
+                    m_iPrefixLengthIPv6 = address.toObject()["PrefixLength"].toInt();
+                    m_sIPv6 = convertQJsonArrayToQStringFormat(ipv6, eWiFiFormatType::FormatType_IPV6);
+                    qInfo() << "ethernet info" << QString("ipv6= %1 and prefix= %2").arg(m_sIPv6).arg(m_iPrefixLengthIPv6);
+ 
                 }      
+            }
+            //for fetching the gateway (v4 and v6)
+            foreach (QJsonValue router, routersArray) {
+                if (!router.toObject()["Gateway"].toArray().isEmpty()) {
+                    if (router.toObject()["Family"].toInt() == eWiFiFormatType::FormatType_IPV4){
+                        QJsonArray ipv4_GatewayArray = router.toObject()["Gateway"].toArray();
+                        m_sIPv4Gateway = convertQJsonArrayToQStringFormat(ipv4_GatewayArray, eWiFiFormatType::FormatType_IPV4);
+                        qInfo() << "ethernet info" << QString("IPv4Gateway= %1 ").arg(m_sIPv4Gateway);
+
+                    } else if (router.toObject()["Family"].toInt() == eWiFiFormatType::FormatType_IPV6){
+                        QJsonArray ipv6_GatewayArray = router.toObject()["Gateway"].toArray();
+                        m_sIPv6Gateway = convertQJsonArrayToQStringFormat(ipv6_GatewayArray, eWiFiFormatType::FormatType_IPV6);
+                        qInfo() << "ethernet info" << QString("IPv6Gateway= %1 ").arg(m_sIPv6Gateway);
+                    }
+                } 
+            }
+            //for fetching the DNS (v4 and v6)
+            foreach (QJsonValue dns, dnsArray) {
+                if((!dns.toObject()["Address"].toArray().isEmpty())){
+                    if (dns.toObject()["Family"].toInt() == eWiFiFormatType::FormatType_IPV4){
+                        QJsonArray DNSv4 = dns.toObject()["Address"].toArray();
+                        m_sDNSv4 = convertQJsonArrayToQStringFormat(DNSv4, eWiFiFormatType::FormatType_IPV4);
+                        qInfo() << "ethernet info" << QString("DNSv4= %1").arg(m_sDNSv4);
+                    } else if (dns.toObject()["Family"].toInt() == eWiFiFormatType::FormatType_IPV6){
+                        QJsonArray DNSv6 = dns.toObject()["Address"].toArray();
+                        m_sDNSv6 = convertQJsonArrayToQStringFormat(DNSv6, eWiFiFormatType::FormatType_IPV6);
+                        qInfo() << "ethernet info" << QString("DNSv6= %1").arg(m_sDNSv6);
+                    }
+                }
             }
         } else {
         qInfo() << "Condition 2 not met";
@@ -209,7 +227,7 @@ QJsonDocument ethernetmanager::parseNetworkInfo(QString reply)
 
 QString ethernetmanager::convertQJsonArrayToQStringFormat(const QJsonArray &array, int formatType)
 {
-    qInfo() << "Converting QJsonArray to QString with formatType:" << formatType;
+    // qInfo() << "Converting QJsonArray to QString with formatType:" << formatType;
 
     QString ipParts = QString("");
 

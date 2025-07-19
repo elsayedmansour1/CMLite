@@ -19,10 +19,12 @@ public Q_SLOTS: // METHODS
     QString getIPv4forEthernet();
     QString getIPv4DNSforEthernet();
     QString getIPv6GatewayforEthernet();
-    QString getIPv6SubnetforEthernet();
+    int getIPv6PrefixLengthforEthernet();
     QString getIPv6forEthernet();
     void SetEth0StaticConfig(const QString &add, const QString &gateway, int prefix);
     void enableDHCP();
+    QString getIPv6DNSforEthernet();
+
 };
 
 

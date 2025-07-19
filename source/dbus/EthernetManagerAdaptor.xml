@@ -20,7 +20,10 @@
     <method name="getIPv6GatewayforEthernet">
       <arg direction="out" type="s" name="path"/>
     </method>
-    <method name="getIPv6SubnetforEthernet">
+    <method name="getIPv6PrefixLengthforEthernet">
+      <arg direction="out" type="i" name="path"/>
+    </method>
+    <method name="getIPv6DNSforEthernet">
       <arg direction="out" type="s" name="path"/>
     </method>
     <method name="SetEth0StaticConfig">

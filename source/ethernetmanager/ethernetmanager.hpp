@@ -18,7 +18,7 @@
 #include <QDir>
 enum eWiFiFormatType{
     FormatType_IPV4 = 2,
-    FormatType_IPV6 = 6,
+    FormatType_IPV6 = 10,
     FormatType_MAC_ADDRESS
 };
 class ethernetmanager: public QObject{
@@ -32,8 +32,9 @@ public:
     QString getIPv4GatewayforEthernet();
     QString getIPv4DNSforEthernet();
     QString getIPv6GatewayforEthernet();
-    QString getIPv6SubnetforEthernet();
     QString getIPv6forEthernet();
+    int     getIPv6PrefixLengthforEthernet();
+    QString getIPv6DNSforEthernet();
     void enableDHCP();
     void SetEth0StaticConfig(QString add,QString gateway ,int prefix);
 signals:
@@ -56,12 +57,15 @@ private:
 
 
     QString mPathEth0;
-    QString m_sIPv4;
-    QString m_sSubnetMask;
     QString m_sMaCAddress;
-    QString m_sDNS;
+    QString m_sDNSv4;
+    QString m_sIPv4;
+    QString m_sSubnetMaskIPv4;
     QString m_sIPv4Gateway;
     QString m_sIPv6;
+    int m_iPrefixLengthIPv6;
+    QString m_sIPv6Gateway;
+    QString m_sDNSv6;
     QDBusInterfaceWrapperInterface* m_pDbusInterface = nullptr;
 
 };
